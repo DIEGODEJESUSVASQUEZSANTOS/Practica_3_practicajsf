@@ -1,6 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<title>Pantalla Restaurantes</title>
@@ -11,29 +12,70 @@
 
 	<!-- ::::::::::::: AGREGA AQUI LA TABLA DE RESTAURANTES ::::::::::::::::::: -->
 
-	<h:dataTable id="tblRestaurantes" var="restaurante"
+	<p:dataTable id="tblRestaurantes" var="restaurante"
 		value="#{restauranteController.restaurantes}"
+		paginator="true" paginatorPosition="bottom"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                     currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros"
+                     rowsPerPageTemplate="5,10,{ShowAll|'All'}" 
 		headerClass="headerTable" rowClasses="rowTable rowTableLine">
-		<h:column>
+		
+		<f:facet name="{Exporters}">
+		<div class="flex justify-content-between">
+            
+                <p:commandLink>
+                	<h:graphicImage url = "/resources/imgs/excel.png" width="50"/>
+                    <p:dataExporter type="EXCEL" target="tblRestaurantes" fileName="ReporteRestaurantes"/>
+                </p:commandLink>
+
+                <p:commandLink>
+                	<h:graphicImage url = "/resources/imgs/xlsx.png" width="50"/>
+                    <p:dataExporter type="xlsxstream" target="tblRestaurantes" fileName="ReporteRestaurantes"/>
+                </p:commandLink>
+
+                <p:commandLink>
+                	<h:graphicImage url = "/resources/imgs/pdf.png" width="50"/>
+                    <p:dataExporter type="pdf" target="tblRestaurantes" fileName="ReporteRestaurantes"/>
+                </p:commandLink>
+
+                <p:commandLink>
+                	<h:graphicImage url = "/resources/imgs/csv.png" width="50"/>
+                    <p:dataExporter type="csv" target="tblRestaurantes" fileName="ReporteRestaurantes" />
+                </p:commandLink>
+
+                <p:commandLink>
+                	<h:graphicImage url = "/resources/imgs/xml.png" width="50"/>
+                    <p:dataExporter type="xml" target="tblRestaurantes" fileName="ReporteRestaurantes"/>
+               </p:commandLink>
+
+                
+            </div>
+          </f:facet> 
+		
+		<p:column headerText="nombre" filterBy="#{restaurante.nombre}" filterMatchMode="contains" sortBy="#{restaurante.nombre}">
 			<f:facet name="header">Nombre</f:facet>
 			<h:outputText value="#{restaurante.nombre}"></h:outputText>
-		</h:column>
-		<h:column>
+		</p:column>
+		
+		<p:column>
 			<f:facet name="header">Dirección</f:facet>
 			<h:outputText value="#{restaurante.direccion}"></h:outputText>
-		</h:column>
-		<h:column>
+		</p:column>
+		
+		<p:column headerText="nombre" filterBy="#{restaurante.pais}" filterMatchMode="contains" sortBy="#{restaurante.pais}">
 			<f:facet name="header">País</f:facet>
 			<h:outputText value="#{restaurante.pais}"></h:outputText>
-		</h:column>
-		<h:column>
+		</p:column>
+		
+		<p:column>
 			<f:facet name="header">Gerentes</f:facet>
 			<h:outputText
 			value="#{restaurante.gerente.nombre} #{restaurante.gerente.primerApellido}
 			#{restaurante.gerente.segundoApellido}">
 			</h:outputText>
-		</h:column>
-	</h:dataTable>
+		</p:column>
+		
+	</p:dataTable>
 </h:body>
 
 </html>
